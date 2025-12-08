@@ -105,56 +105,56 @@ TIMER_PID=$!
 notify-send --urgency=normal --expire-time=3000 --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Started" "20-20 Rule reminder started. You will be reminded every ${PERIOD_MINUTES} minutes."
 
 # Start yad notification icon
-(
-    yad --notification \
-        --image="$ICON_PATH" \
-        --text="20-20-20 Rule: Running" \
-        --command="bash -c 'echo toggle > $FIFO_FILE'" \
-        --menu="Pause!bash -c 'echo pause > $FIFO_FILE'!gtk-media-pause|Exit!bash -c 'echo quit > $FIFO_FILE'!gtk-quit" \
-        --listen <&3 &
-    YAD_PID=$!
-    
-    # Monitor FIFO for commands
+{
+    # Monitor FIFO for commands and update yad
     while true; do
         if read -r cmd < "$FIFO_FILE"; then
             case "$cmd" in
                 pause)
                     if [ ! -f "$PAUSE_FLAG_FILE" ]; then
                         touch "$PAUSE_FLAG_FILE"
-                        echo "tooltip:20-20-20 Rule: Paused" >&3
-                        echo "menu:Resume!bash -c 'echo resume > $FIFO_FILE'!gtk-media-play|Exit!bash -c 'echo quit > $FIFO_FILE'!gtk-quit" >&3
+                        echo "tooltip:20-20-20 Rule: Paused"
+                        echo "menu:Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Paused" "Eye care reminders paused."
                     fi
                     ;;
                 resume)
                     if [ -f "$PAUSE_FLAG_FILE" ]; then
                         rm -f "$PAUSE_FLAG_FILE"
-                        echo "tooltip:20-20-20 Rule: Running" >&3
-                        echo "menu:Pause!bash -c 'echo pause > $FIFO_FILE'!gtk-media-pause|Exit!bash -c 'echo quit > $FIFO_FILE'!gtk-quit" >&3
+                        echo "tooltip:20-20-20 Rule: Running"
+                        echo "menu:Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Resumed" "Eye care reminders resumed."
                     fi
                     ;;
                 toggle)
                     if [ -f "$PAUSE_FLAG_FILE" ]; then
                         rm -f "$PAUSE_FLAG_FILE"
-                        echo "tooltip:20-20-20 Rule: Running" >&3
-                        echo "menu:Pause!bash -c 'echo pause > $FIFO_FILE'!gtk-media-pause|Exit!bash -c 'echo quit > $FIFO_FILE'!gtk-quit" >&3
+                        echo "tooltip:20-20-20 Rule: Running"
+                        echo "menu:Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Resumed" "Eye care reminders resumed."
                     else
                         touch "$PAUSE_FLAG_FILE"
-                        echo "tooltip:20-20-20 Rule: Paused" >&3
-                        echo "menu:Resume!bash -c 'echo resume > $FIFO_FILE'!gtk-media-play|Exit!bash -c 'echo quit > $FIFO_FILE'!gtk-quit" >&3
+                        echo "tooltip:20-20-20 Rule: Paused"
+                        echo "menu:Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Paused" "Eye care reminders paused."
                     fi
                     ;;
                 quit)
-                    kill $YAD_PID 2>/dev/null
-                    cleanup
+                    # Exit cleanly
+                    echo "quit"
+                    break
                     ;;
             esac
         fi
     done
-) 3>&1 &
+} | yad --notification \
+    --image="$ICON_PATH" \
+    --text="20-20-20 Rule: Running" \
+    --command="bash -c 'echo toggle > \"$FIFO_FILE\"'" \
+    --menu="Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit" \
+    --listen &
+
+YAD_PID=$!
 
 # Wait for signals
 wait
