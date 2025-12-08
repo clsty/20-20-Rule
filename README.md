@@ -114,6 +114,9 @@ This helps reduce eye fatigue when working on computers or screens for extended 
 
 The original simple script `scriptReminder.sh` is still available for those who prefer a minimal implementation without system tray support.
 
-## License
+## Credits
+- This project is originally a fork of [ShahzamanRai/20-20-Rule](https://github.com/ShahzamanRai/20-20-Rule).
+- It's mainly written by AI (with manually testing and tweaking later).
 
-This project is open source. Feel free to use and modify as needed.
+## License
+MIT License
