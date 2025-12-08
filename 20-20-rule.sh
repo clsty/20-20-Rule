@@ -104,6 +104,10 @@ TIMER_PID=$!
 # Show startup notification
 notify-send --urgency=normal --expire-time=3000 --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Started" "20-20 Rule reminder started. You will be reminded every ${PERIOD_MINUTES} minutes."
 
+# Menu strings
+MENU_RUNNING="Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
+MENU_PAUSED="Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
+
 # Start yad notification icon
 {
     # Monitor FIFO for commands and update yad
@@ -114,7 +118,7 @@ notify-send --urgency=normal --expire-time=3000 --icon="$ICON_PATH" --app-name="
                     if [ ! -f "$PAUSE_FLAG_FILE" ]; then
                         touch "$PAUSE_FLAG_FILE"
                         echo "tooltip:20-20-20 Rule: Paused"
-                        echo "menu:Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
+                        echo "menu:$MENU_PAUSED"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Paused" "Eye care reminders paused."
                     fi
                     ;;
@@ -122,7 +126,7 @@ notify-send --urgency=normal --expire-time=3000 --icon="$ICON_PATH" --app-name="
                     if [ -f "$PAUSE_FLAG_FILE" ]; then
                         rm -f "$PAUSE_FLAG_FILE"
                         echo "tooltip:20-20-20 Rule: Running"
-                        echo "menu:Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
+                        echo "menu:$MENU_RUNNING"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Resumed" "Eye care reminders resumed."
                     fi
                     ;;
@@ -130,12 +134,12 @@ notify-send --urgency=normal --expire-time=3000 --icon="$ICON_PATH" --app-name="
                     if [ -f "$PAUSE_FLAG_FILE" ]; then
                         rm -f "$PAUSE_FLAG_FILE"
                         echo "tooltip:20-20-20 Rule: Running"
-                        echo "menu:Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
+                        echo "menu:$MENU_RUNNING"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Resumed" "Eye care reminders resumed."
                     else
                         touch "$PAUSE_FLAG_FILE"
                         echo "tooltip:20-20-20 Rule: Paused"
-                        echo "menu:Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
+                        echo "menu:$MENU_PAUSED"
                         notify-send --urgency=normal --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Paused" "Eye care reminders paused."
                     fi
                     ;;
@@ -151,7 +155,7 @@ notify-send --urgency=normal --expire-time=3000 --icon="$ICON_PATH" --app-name="
     --image="$ICON_PATH" \
     --text="20-20-20 Rule: Running" \
     --command="bash -c 'echo toggle > \"$FIFO_FILE\"'" \
-    --menu="Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit" \
+    --menu="$MENU_RUNNING" \
     --listen &
 
 YAD_PID=$!
