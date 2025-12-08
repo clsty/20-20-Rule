@@ -1,10 +1,15 @@
 #!/bin/bash
- notify-send --urgency=normal --expire-time=3000 --app-name=Reminder "Reminder Starts."
+cd "$(dirname $0)"
+base="$(pwd)"
+soundfile="$base/ding.mp3"
+period_minutes=20
+break_seconds=20
+notify-send --urgency=normal --expire-time=3000 --app-name=Reminder "Reminder Starts."
 while :
 do
-    sleep 1200
-    notify-send --urgency=normal --expire-time=20000 --app-name=Reminder "Take a break" "Take a break for 20 second and look an object 20m far"
-    mpv ~/Music/ding.mp3
-    sleep 20
-    mpv ~/Music/ding.mp3
+  sleep $((period_minutes*60))
+  notify-send --urgency=normal --expire-time=$((break_seconds*1000)) --app-name=Reminder "Take a break" "Look an object 20m far for ${break_seconds}s."
+  mpv "$soundfile"
+  sleep ${break_seconds}
+  mpv "$soundfile"
 done
