@@ -109,11 +109,12 @@ MENU_RUNNING="Pause!bash -c 'echo pause > \"$FIFO_FILE\"'!gtk-media-pause|Exit!b
 MENU_PAUSED="Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!bash -c 'echo quit > \"$FIFO_FILE\"'!gtk-quit"
 
 # Start yad notification icon
+# Use x11 GDK_BACKEND to fix error: (yad:171058): Gtk-CRITICAL **: 15:37:43.813: gtk_widget_get_scale_factor: assertion 'GTK_IS_WIDGET (widget)' failed
+export GDK_BACKEND=x11
 {
     # Monitor FIFO for commands and update yad
-    while true; do
-        if read -r cmd < "$FIFO_FILE"; then
-            case "$cmd" in
+    while read -r cmd < "$FIFO_FILE"; do
+        case "$cmd" in
                 pause)
                     if [ ! -f "$PAUSE_FLAG_FILE" ]; then
                         touch "$PAUSE_FLAG_FILE"
@@ -147,9 +148,8 @@ MENU_PAUSED="Resume!bash -c 'echo resume > \"$FIFO_FILE\"'!gtk-media-play|Exit!b
                     # Exit cleanly
                     echo "quit"
                     break
-                    ;;
-            esac
-        fi
+            ;;
+        esac
     done
 } | yad --notification \
     --image="$ICON_PATH" \
