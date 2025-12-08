@@ -33,10 +33,10 @@ PAUSE_FLAG_FILE="/tmp/20-20-rule-$USER.paused"
 # Determine icon path
 if [ -f "$SCRIPT_DIR/20-20-rule.svg" ]; then
     ICON_PATH="$SCRIPT_DIR/20-20-rule.svg"
-elif [ -f "/usr/local/share/icons/hicolor/128x128/apps/20-20-rule.png" ]; then
-    ICON_PATH="/usr/local/share/icons/hicolor/128x128/apps/20-20-rule.png"
-elif [ -f "$HOME/.local/share/icons/hicolor/128x128/apps/20-20-rule.png" ]; then
-    ICON_PATH="$HOME/.local/share/icons/hicolor/128x128/apps/20-20-rule.png"
+elif [ -f "/usr/local/share/icons/hicolor/128x128/apps/20-20-rule.svg" ]; then
+    ICON_PATH="/usr/local/share/icons/hicolor/128x128/apps/20-20-rule.svg"
+elif [ -f "$HOME/.local/share/icons/hicolor/128x128/apps/20-20-rule.svg" ]; then
+    ICON_PATH="$HOME/.local/share/icons/hicolor/128x128/apps/20-20-rule.svg"
 else
     ICON_PATH="dialog-information"  # Fallback to system icon
 fi
@@ -70,7 +70,7 @@ mkfifo "$FIFO_FILE"
 
 # Function to show break notification
 show_break_notification() {
-    notify-send --urgency=critical --expire-time=$((BREAK_SECONDS*1000)) --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Take a break" "Look at an object 20m (20 feet) away for ${BREAK_SECONDS} seconds."
+    notify-send --urgency=critical --expire-time=$((BREAK_SECONDS*1000)) --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Take a break" "Look at an object 20 feet (6 meters) away for ${BREAK_SECONDS} seconds."
     
     # Play sound if available
     if [ -f "$SOUND_FILE" ] && command -v mpv &> /dev/null; then

@@ -32,7 +32,7 @@ install:
 	install -Dm755 $(SCRIPT) $(DESTDIR)$(BINDIR)/20-20-rule
 	install -Dm644 $(DATAFILE) $(DESTDIR)$(DATADIR)/$(DATAFILE)
 	install -Dm644 $(DESKTOP) $(DESTDIR)$(DESKTOPDIR)/$(DESKTOP)
-	install -Dm644 $(ICON_SVG) $(DESTDIR)$(ICONDIR)/20-20-rule.png
+	install -Dm644 $(ICON_SVG) $(DESTDIR)$(ICONDIR)/20-20-rule.svg
 	@echo "Installation complete!"
 	@echo "Run '20-20-rule' to start the application"
 	@echo "Or launch it from your application menu"
@@ -43,7 +43,7 @@ uninstall:
 	rm -f $(DESTDIR)$(BINDIR)/20-20-rule
 	rm -rf $(DESTDIR)$(DATADIR)
 	rm -f $(DESTDIR)$(DESKTOPDIR)/$(DESKTOP)
-	rm -f $(DESTDIR)$(ICONDIR)/20-20-rule.png
+	rm -f $(DESTDIR)$(ICONDIR)/20-20-rule.svg
 	@echo "Uninstallation complete!"
 
 # User installation
