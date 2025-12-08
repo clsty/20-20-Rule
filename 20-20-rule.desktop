@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=20-20-20 Rule
+Name[zh_CN]=20-20-20 护眼提醒
+Comment=Eye care reminder using the 20-20-20 rule
+Comment[zh_CN]=使用 20-20-20 规则的护眼提醒工具
+Exec=20-20-rule
+Icon=20-20-rule
+Terminal=false
+Categories=Utility;
+Keywords=eye;care;reminder;health;break;
+Keywords[zh_CN]=护眼;提醒;健康;休息;
+StartupNotify=false
