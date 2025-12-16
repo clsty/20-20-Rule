@@ -70,7 +70,7 @@ mkfifo "$FIFO_FILE"
 
 # Function to show break notification
 show_break_notification() {
-    notify-send --urgency=critical --expire-time=$((BREAK_SECONDS*1000)) --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Take a break" "Look at an object 20 feet (6 meters) away for ${BREAK_SECONDS} seconds."
+    notify-send --urgency=normal --expire-time=$((BREAK_SECONDS*1000)) --icon="$ICON_PATH" --app-name="20-20-20 Rule" "Take a break" "Look at an object 20 feet (6 meters) away for ${BREAK_SECONDS} seconds."
     
     # Play sound if available
     if [ -f "$SOUND_FILE" ] && command -v mpv &> /dev/null; then
