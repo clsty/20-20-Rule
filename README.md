@@ -1,3 +1,5 @@
+**Archived: Please use [hovancik/stretchly](https://github.com/hovancik/stretchly) as a much better alternative.**
+
 # 20-20-Rule
 
 A simple bash script implementing the 20-20-20 rule for eye care: every 20 minutes, take a 20-second break and look at something 20 feet (6 meters) away.
